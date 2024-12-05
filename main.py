@@ -1,14 +1,16 @@
 import os
 import sys
 from importlib import reload
+
 from dotenv import load_dotenv
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
+
 from constants import *
 from tasks.task_manager import TaskManager
 
 
-class ProjectChangeHandler(FileSystemEventHandler):
+class FileChangeHandler(FileSystemEventHandler):
     @staticmethod
     def get_module_name(file_path):
         relative_path = os.path.relpath(file_path, os.getcwd())
@@ -24,23 +26,23 @@ class ProjectChangeHandler(FileSystemEventHandler):
                 print(f"Error reloading module {module_name}: {e}")
 
     def on_modified(self, event):
-        if event.src_path.endswith(PYTHON_EXTENSION):
+        if event.src_path.endswith('.py'):
             module_name = self.get_module_name(event.src_path)
             self.reload_module(module_name)
 
     def on_created(self, event):
-        if event.src_path.endswith(PYTHON_EXTENSION):
+        if event.src_path.endswith('.py'):
             print(f"New file detected: {event.src_path}. You can integrate it dynamically.")
 
 
-def load_env_file():
-    if not os.path.exists(ENV_FILE):
+def load_environment_variables():
+    if not os.path.exists('.env'):
         print("Error: .env file not found. Please run the setup script first.")
         sys.exit(1)
-    load_dotenv(ENV_FILE)
+    load_dotenv('.env')
 
 
-def display_menu():
+def display_main_menu():
     print("\n=== Shapeshifter Main Menu ===")
     options = [
         "Analyze the entire project",
@@ -57,15 +59,15 @@ def display_menu():
 
 def get_user_input():
     return {
-        "script_prompt": input(NEW_SCRIPT_PROMPT).strip(),
-        "script_desc": input(SCRIPT_DESC_PROMPT).strip(),
-        "existing_script": input(EXISTING_SCRIPT_PROMPT).strip(),
-        "modif_desc": input(MODIF_DESC_PROMPT).strip(),
-        "commit_msg": input(COMMIT_MSG_PROMPT).strip()
+        "script_prompt": input("Enter the name of the new script: ").strip(),
+        "script_desc": input("Enter a description for the new script: ").strip(),
+        "existing_script": input("Enter the name of the existing script: ").strip(),
+        "modif_desc": input("Enter a description for the modifications: ").strip(),
+        "commit_msg": input("Enter a commit message: ").strip()
     }
 
 
-def handle_menu_choice(choice, user_input):
+def process_user_choice(choice, user_input):
     task_manager = TaskManager()
 
     task_map = {
@@ -87,8 +89,8 @@ def handle_menu_choice(choice, user_input):
     return True
 
 
-def setup_observer():
-    handler = ProjectChangeHandler()
+def setup_file_observer():
+    handler = FileChangeHandler()
     observer = Observer()
     observer.schedule(handler, path=os.getcwd(), recursive=True)
     observer.start()
@@ -96,10 +98,10 @@ def setup_observer():
     return observer
 
 
-def run_loop(observer):
+def run_main_loop(observer):
     try:
         user_input = get_user_input()
-        while handle_menu_choice(display_menu(), user_input):
+        while process_user_choice(display_main_menu(), user_input):
             pass
     except KeyboardInterrupt:
         print("\nStopping Shapeshifter.")
@@ -112,10 +114,10 @@ def run_loop(observer):
 def main():
     print("Welcome to Shapeshifter!")
     print("Your AI-powered Python project manager with real-time updates.")
-    load_env_file()
+    load_environment_variables()
 
-    observer = setup_observer()
-    run_loop(observer)
+    observer = setup_file_observer()
+    run_main_loop(observer)
 
 
 if __name__ == "__main__":
