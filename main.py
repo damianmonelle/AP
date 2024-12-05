@@ -57,14 +57,8 @@ def display_main_menu():
     return input("Choose an option: ").strip()
 
 
-def get_user_input():
-    return {
-        "script_prompt": input("Enter the name of the new script: ").strip(),
-        "script_desc": input("Enter a description for the new script: ").strip(),
-        "existing_script": input("Enter the name of the existing script: ").strip(),
-        "modif_desc": input("Enter a description for the modifications: ").strip(),
-        "commit_msg": input("Enter a commit message: ").strip()
-    }
+def get_user_input(prompt):
+    return input(prompt).strip()
 
 
 def process_user_choice(choice, user_input):
@@ -100,7 +94,13 @@ def setup_file_observer():
 
 def run_main_loop(observer):
     try:
-        user_input = get_user_input()
+        user_input = {
+            "script_prompt": get_user_input("Enter the name of the new script: "),
+            "script_desc": get_user_input("Enter a description for the new script: "),
+            "existing_script": get_user_input("Enter the name of the existing script: "),
+            "modif_desc": get_user_input("Enter a description for the modifications: "),
+            "commit_msg": get_user_input("Enter a commit message: ")
+        }
         while process_user_choice(display_main_menu(), user_input):
             pass
     except KeyboardInterrupt:
