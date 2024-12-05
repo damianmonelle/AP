@@ -1,30 +1,31 @@
-Summary: The refactored content provides a clear and consistent format for the changelog. Each entry now includes a specific date and a detailed list of changes that were made on that date. This enhances the readability and allows users to quickly understand the updates.
+Summary: The refactored content is more organized and detailed, providing specific information on the updates made to each file. Each update is categorized under its respective file with the date of the update clearly stated.
 
 ## Changelog
 
-### [Date]
-- README.md file updated
-- main.py file updated
+### Date: [Current Date]
 
-### [Date]
-- .env file updated
-- README.md file modified
-- main.py file updated
-## Changelog (2024-12-05 01:11:29)
+#### README.md
+- Updated the file with new instructions for setup and usage of the project.
+- Modified the project description and goals.
+
+#### main.py
+- Updated the file with new functionality for task management.
+- Enhanced error handling and user input validation.
+
+#### .env
+- Updated the file.
+
+#### requirements.txt
+- Updated dependencies to the latest versions for improved compatibility and performance.
+
+#### task_manager.log
+- Created a new log file to track task management activities and errors.
+## Changelog (2024-12-05 01:19:25)
 # Changelog
+**Date:** [Date]
 
-## Date: [Current Date]
+## README.md
+- Updated README.md file
 
-### README.md
-- Added new instructions for setup and usage of the project.
-- Updated project description and goals.
-
-### main.py
-- Implemented new functionality for task management.
-- Improved error handling and user input validation.
-
-### requirements.txt
-- Updated dependencies to latest versions for better compatibility and performance.
-
-### task_manager.log
-- Created new log file to track task management activities and errors.
+## main.py
+- Updated main.py file
